@@ -22,7 +22,7 @@ async function bootstrap() {
   app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
 
-  const port = configService.get<number>('PORT') ?? 3000;
+  const port = configService.get<number>('AUTH_SERVICE_PORT') ?? 3000;
   await app.listen(port);
 }
 bootstrap();
