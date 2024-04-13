@@ -19,7 +19,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      `http://localhost:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
+      `https://localhost:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
     ],
     credentials: true,
   });
