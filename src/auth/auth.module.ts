@@ -4,6 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as https from 'https';
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => ({
         timeout: 5000,
         maxRedirects: 3,
-        baseURL: `http://localhost:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
+        baseURL: `https://localhost:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+          requestCert: false,
+        }),
         withCredentials: true,
       }),
       inject: [ConfigService],
