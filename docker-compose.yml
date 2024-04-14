@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  auth-service:
+    container_name: auth-service
+    image: auth-service
+    build:
+      context: ./
+      target: debug
+    ports:
+      - 3000:3000
+    environment:
+      - AUTH_SERVICE_PORT=3000
+      - USER_SERVICE_PORT=3005
+      - JSON_WEB_TOKEN_SECRET=f54ba18d499d012d7b09f5f97b967451cac1a5215c2462a343e52763fa8820fc
+    volumes:
+      - ./backend/auth:/auth
+      - /auth/node_modules
+    depends_on:
+      - user-service
+      - users-database
+  user-service:
+    container_name: user-service
+    image: user-service
+    volumes:
+      - ./backend/users:/users
+      - /users/node_modules
+    build:
+      context: ../user-service
+      target: debug
+    environment:
+      - USER_SERVICE_PORT=3005
+      - AUTH_SERVICE_PORT=3000
+    ports:
+      - 3005:3005
+    depends_on:
+      - users-database
+
+  users-database:
+    image: mysql
+    container_name: users-database
+    restart: on-failure
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: users
+      MYSQL_USER: user
+      MYSQL_PASSWORD: admin
+    volumes:
+      - ./backend/data:/var/lib/mysql
+    ports:
+      - 3306:3306

@@ -56,3 +56,12 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /certs/
+
+node_modules
+/node_modules
+node_modules/
+node_modules/
+*/node_modules
+
+backend/*
+backend/node_modules
