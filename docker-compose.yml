@@ -8,10 +8,8 @@ services:
       target: debug
     ports:
       - 3000:3000
-    environment:
-      - AUTH_SERVICE_PORT=3000
-      - USER_SERVICE_PORT=3005
-      - JSON_WEB_TOKEN_SECRET=f54ba18d499d012d7b09f5f97b967451cac1a5215c2462a343e52763fa8820fc
+    env_file:
+      - docker-compose.env
     volumes:
       - ./backend/auth:/auth
       - /auth/node_modules
@@ -30,6 +28,7 @@ services:
     environment:
       - USER_SERVICE_PORT=3005
       - AUTH_SERVICE_PORT=3000
+      - DATABASE_HOST=users-database
     ports:
       - 3005:3005
     depends_on:
