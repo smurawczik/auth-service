@@ -13,7 +13,7 @@ import * as https from 'https';
       useFactory: async (configService: ConfigService) => ({
         global: true,
         secret: configService.get<string>('JSON_WEB_TOKEN_SECRET'),
-        signOptions: { expiresIn: '60s' },
+        signOptions: { expiresIn: '2d' },
       }),
       inject: [ConfigService],
     }),
@@ -22,7 +22,7 @@ import * as https from 'https';
       useFactory: async (configService: ConfigService) => ({
         timeout: 5000,
         maxRedirects: 3,
-        baseURL: `https://localhost:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
+        baseURL: `https://${configService.get<number>('USER_SERVICE_HOST')}:${configService.get<number>('USER_SERVICE_PORT') ?? 3005}`,
         httpsAgent: new https.Agent({
           rejectUnauthorized: false,
           requestCert: false,

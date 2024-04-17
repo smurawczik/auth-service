@@ -11,8 +11,8 @@ services:
     env_file:
       - docker-compose.env
     volumes:
-      - ./backend/auth:/auth
-      - /auth/node_modules
+      - .:/auth-service
+      - /auth-service/node_modules
     depends_on:
       - user-service
       - users-database
@@ -20,8 +20,8 @@ services:
     container_name: user-service
     image: user-service
     volumes:
-      - ./backend/users:/users
-      - /users/node_modules
+      - ../user-service:/user-service
+      - /user-service/node_modules
     build:
       context: ../user-service
       target: debug
@@ -44,6 +44,6 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: admin
     volumes:
-      - ./backend/data:/var/lib/mysql
+      - ./data:/var/lib/mysql
     ports:
       - 3306:3306
